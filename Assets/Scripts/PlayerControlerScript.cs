@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 0.000000001f;
 
     [Header("Jump")]
-    public float jumpHeight = 2f;
+    public float jumpHeight = 0.002f;
 
     [Header("Gravity")]
     public float gravity = -9.81f;
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 velocity;
 
-    private void Awake()
+    public void Wastart()
     {
         controller = GetComponent<CharacterController>();
 
@@ -59,13 +59,9 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
 
-        Vector3 movement = new Vector3(
-            moveInput.x,
-            0f,
-            moveInput.y
-        );
+        Vector3 movement = new Vector3(moveInput.x,0f,moveInput.y);
 
-        controller.Move(movement * moveSpeed * Time.deltaTime);
+        controller.Move(movement * moveSpeed * Time.deltaTime*0.2f);
     }
 
     private void Jump()
