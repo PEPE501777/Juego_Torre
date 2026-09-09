@@ -12,13 +12,23 @@ public class PlayerMovement : MonoBehaviour
     [Header("Gravity")]
     public float gravity = -9.81f;
 
+    [SerializeField] private Camera arCamera;
+    [SerializeField] private GameObject planeFinder;
+
+    private bool detenido;
+    private bool colocado;
+    private float aceptarToqueDesde;
+
+
     private CharacterController controller;
     private PlayerControls controls;
 
     private Vector2 moveInput;
     private Vector3 velocity;
 
-    public void Wastart()
+    private bool active = false;
+
+    public void Awake()
     {
         controller = GetComponent<CharacterController>();
 
@@ -40,9 +50,22 @@ public class PlayerMovement : MonoBehaviour
         };
     }
 
+    public void ActivarInteraccion(GameObject contenidoColocado)
+    {
+        colocado = true;
+
+        aceptarToqueDesde = Time.unscaledTime + 0.3f;
+
+        if (planeFinder != null)
+            planeFinder.SetActive(false);
+    }
+
+
+
     private void OnEnable()
     {
         controls.Enable();
+ 
     }
 
     private void OnDisable()
@@ -54,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         ApplyGravity();
+        Debug.Log("Move Input: " + moveInput);
     }
 
     private void Move()
@@ -61,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 movement = new Vector3(moveInput.x,0f,moveInput.y);
 
-        controller.Move(movement * moveSpeed * Time.deltaTime*0.2f);
+        controller.Move(movement * moveSpeed * Time.deltaTime);
     }
 
     private void Jump()
